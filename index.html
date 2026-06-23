@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEMO | Sua Marca Aqui</title>
+    <!-- Ligação ao ficheiro CSS separado -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- BARRA DE ANÚNCIO -->
+    <div class="promo-bar">
+        PORTES GRÁTIS EM ENCOMENDAS SUPERIORES A 29€ | DEVOLUÇÕES GRÁTIS
+    </div>
+
+    <!-- CABEÇALHO -->
+    <header>
+        <div class="header-main">
+            <div class="logo">Sua Marca Aqui</div>
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Pesquise por produtos (ex: Vestido)..." onkeyup="filterProducts()">
+            </div>
+            <div class="header-icons">
+                <span>👤</span>
+                <span>❤️</span>
+                <span onclick="toggleCart()">🛒 <span class="cart-count" id="cart-counter">0</span></span>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">NOVIDADES</a></li>
+                <li><a href="#">SALDOS</a></li>
+                <li><a href="#">VESTIDOS</a></li>
+                <li><a href="#">TOPOS</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- BANNER -->
+    <section class="hero-banner">
+        <h1>SALDOS DE VERÃO</h1>
+        <p>Até -70% de desconto</p>
+        <a href="#" class="hero-btn">Comprar Agora</a>
+    </section>
+
+    <!-- CUPÕES INTERATIVOS -->
+    <section class="coupons-container">
+        <div class="coupon-card" onclick="claimCoupon('3€')">
+            <h3>-3€</h3>
+            <p>Clique para recolher</p>
+        </div>
+        <div class="coupon-card" onclick="claimCoupon('7€')">
+            <h3>-7€</h3>
+            <p>Clique para recolher</p>
+        </div>
+        <div class="coupon-card" onclick="claimCoupon('12€')">
+            <h3>-12€</h3>
+            <p>Clique para recolher</p>
+        </div>
+    </section>
+
+    <!-- VITRINE DE PRODUTOS -->
+    <section class="products-section">
+        <h2 class="section-title">Produtos em Destaque</h2>
+        <div class="product-grid" id="product-grid">
+            
+            <div class="product-card" data-name="vestido de verao floral com folhos">
+                <span class="product-tag">-40%</span>
+                <img src="https://unsplash.com" class="product-image" alt="Vestido">
+                <div class="product-info">
+                    <p class="product-name">Vestido de Verão Floral com Folhos</p>
+                    <div class="product-price">
+                        <span class="current-price">14.99€</span>
+                        <button class="add-to-cart-btn" onclick="addToCart('Vestido Floral', 14.99)">+ Carrinho</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-name="conjunto casual de duas pecas amarelo">
+                <span class="product-tag">POPULAR</span>
+                <img src="https://unsplash.com" class="product-image" alt="Conjunto">
+                <div class="product-info">
+                    <p class="product-name">Conjunto Casual de Duas Peças Amarelo</p>
+                    <div class="product-price">
+                        <span class="current-price">19.99€</span>
+                        <button class="add-to-cart-btn" onclick="addToCart('Conjunto Amarelo', 19.99)">+ Carrinho</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-name="casaco de ganga oversized vintage">
+                <span class="product-tag">-20%</span>
+                <img src="https://unsplash.com" class="product-image" alt="Casaco">
+                <div class="product-info">
+                    <p class="product-name">Casaco de Ganga Oversized Vintage</p>
+                    <div class="product-price">
+                        <span class="current-price">27.99€</span>
+                        <button class="add-to-cart-btn" onclick="addToCart('Casaco Ganga', 27.99)">+ Carrinho</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-name="top de alcas em cetim elegante">
+                <span class="product-tag">NOVO</span>
+                <img src="https://unsplash.com" class="product-image" alt="Top">
+                <div class="product-info">
+                    <p class="product-name">Top de Alças em Cetim Elegante</p>
+                    <div class="product-price">
+                        <span class="current-price">9.99€</span>
+                        <button class="add-to-cart-btn" onclick="addToCart('Top Cetim', 9.99)">+ Carrinho</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- JANELA LATERAL DO CARRINHO (MODAL) -->
+    <div class="cart-modal" id="cart-modal">
+        <div class="cart-modal-header">
+            <h3>O Meu Carrinho</h3>
+            <span class="close-cart" onclick="toggleCart()">&times;</span>
+        </div>
+        <ul class="cart-items-list" id="cart-items-list">
+            <!-- Itens dinâmicos aparecem aqui -->
+        </ul>
+        <div class="cart-total">
+            <span>Total:</span>
+            <span id="cart-total-value">0.00€</span>
+        </div>
+        <div class="checkout-btn" onclick="checkout()">Finalizar Compra (Demo)</div>
+    </div>
+
+    <!-- RODAPÉ -->
+    <footer>
+        <p>&copy; 2026 SUA MARCA AQUI. Página de Demonstração Interativa.</p>
+    </footer>
+
+    <!-- INTERAÇÕES DA DEMO (JAVASCRIPT) -->
+    <script>
+        let cart = [];
+        let total = 0;
+
+        function claimCoupon(value) {
+            alert(`Cupão de ${value} resgatado com sucesso! Será aplicado no checkout.`);
+        }
+
+        function toggleCart() {
+            const modal = document.getElementById('cart-modal');
+            modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            total += price;
+            updateCartDOM();
+        }
+
+        function updateCartDOM() {
+            document.getElementById('cart-counter').innerText = cart.length;
+            document.getElementById('cart-total-value').innerText = total.toFixed(2) + '€';
+            
+            const list = document.getElementById('cart-items-list');
+            list.innerHTML = '';
+            
+            cart.forEach((item) => {
+                const li = document.createElement('li');
+                li.className = 'cart-item';
+                li.innerHTML = `<span>${item.name}</span> <strong>${item.price}€</strong>`;
+                list.appendChild(li);
+            });
+        }
+
+        function filterProducts() {
+            const input = document.getElementById('search-input').value.toLowerCase();
+            const cards = document.getElementsByClassName('product-card');
+            
+            for (let i = 0; i < cards.length; i++) {
+                const name = cards[i].getAttribute('data-name');
+                if (name.includes(input)) {
+                    cards[i].style.display = "block";
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+        }
+
+        function checkout() {
+            if(cart.length === 0) {
+                alert("O seu carrinho está vazio!");
+            } else {
+                alert(`Demo Concluída!\nTotal da encomenda: ${total.toFixed(2)}€\nObrigado por testar a simulação.`);
+                cart = [];
+                total = 0;
+                updateCartDOM();
+                toggleCart();
+            }
+        }
+    </script>
+</body>
+</html>
